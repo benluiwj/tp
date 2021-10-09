@@ -35,7 +35,7 @@ public class JsonAdaptedProduct {
     }
 
     /**
-     * Converts this Jackson-friendly adapted client object into the model's {@code Client} object.
+     * Converts this Jackson-friendly adapted product object into the model's {@code Product} object.
      *
      * @throws IllegalValueException if there were any data constraints violated in the adapted client.
      */
