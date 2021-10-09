@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.client.Client;
+import seedu.address.model.client.PhoneNumber;
 import seedu.address.model.commons.ID;
 import seedu.address.model.commons.Name;
 
@@ -16,14 +17,17 @@ public class JsonAdaptedClient {
 
     private final String name;
     private final String id;
+    private final String phoneNumber;
 
     /**
      * Constructs a {@code JsonAdaptedClient} with the given client details.
      */
     @JsonCreator
-    public JsonAdaptedClient(@JsonProperty("name") String name, @JsonProperty("id") String id) {
+    public JsonAdaptedClient(@JsonProperty("name") String name, @JsonProperty("id") String id,
+    @JsonProperty("phone number") String phoneNumber) {
         this.name = name;
         this.id = id;
+        this.phoneNumber = phoneNumber;
     }
 
     /**
@@ -32,6 +36,7 @@ public class JsonAdaptedClient {
     public JsonAdaptedClient(Client source) {
         name = source.getName().fullName;
         id = source.getId().toString();
+        phoneNumber = source.getPhoneNumber().toString();
     }
 
     /**
@@ -52,6 +57,12 @@ public class JsonAdaptedClient {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, ID.class.getSimpleName()));
         }
         final ID modelId = new ID(id);
-        return new Client(modelId, modelName);
+
+        if (phoneNumber == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    PhoneNumber.class.getSimpleName()));
+        }
+        final PhoneNumber modelPhoneNumber = new PhoneNumber(phoneNumber);
+        return new Client(modelId, modelName, modelPhoneNumber);
     }
 }

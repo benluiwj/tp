@@ -7,6 +7,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.commons.ID;
 import seedu.address.model.commons.Name;
 import seedu.address.model.product.Product;
+import seedu.address.model.product.UnitPrice;
 
 /**
  * Jackson-friendly version of {@link Product}.
@@ -16,14 +17,17 @@ public class JsonAdaptedProduct {
 
     private final String name;
     private final String id;
+    private final String unitPrice;
 
     /**
      * Constructs a {@code JsonAdaptedProduct} with the given product details.
      */
     @JsonCreator
-    public JsonAdaptedProduct(@JsonProperty("name") String name, @JsonProperty("id") String id) {
+    public JsonAdaptedProduct(@JsonProperty("name") String name, @JsonProperty("id") String id,
+                              @JsonProperty("unit price") String unitPrice) {
         this.name = name;
         this.id = id;
+        this.unitPrice = unitPrice;
     }
 
     /**
@@ -32,6 +36,7 @@ public class JsonAdaptedProduct {
     public JsonAdaptedProduct(Product source) {
         name = source.getName().fullName;
         id = source.getId().toString();
+        unitPrice = source.getUnitPrice().toString();
     }
 
     /**
@@ -52,7 +57,13 @@ public class JsonAdaptedProduct {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, ID.class.getSimpleName()));
         }
         final ID modelId = new ID(id);
-        return new Product(modelId, modelName);
+
+        if (unitPrice == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    UnitPrice.class.getSimpleName()));
+        }
+        final UnitPrice modelUnitPrice = new UnitPrice(unitPrice);
+        return new Product(modelId, modelName, modelUnitPrice);
     }
 }
 
