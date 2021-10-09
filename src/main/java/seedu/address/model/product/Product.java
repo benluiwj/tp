@@ -18,19 +18,21 @@ public class Product implements Category {
 
     // Data fields
     private final Name name;
+    private final UnitPrice unitPrice;
 
-    public Product(Name name) {
-        this(new ID(), name);
+    public Product(Name name, UnitPrice unitPrice) {
+        this(new ID(), name, unitPrice);
     }
 
     /**
      * Every field must be present and not null.
      */
-    public Product(ID id, Name name) {
-        requireAllNonNull(id, name);
+    public Product(ID id, Name name, UnitPrice unitPrice) {
+        requireAllNonNull(id, name, unitPrice);
 
         this.id = id;
         this.name = name;
+        this.unitPrice = unitPrice;
     }
 
     public ID getId() {
@@ -41,8 +43,12 @@ public class Product implements Category {
         return name;
     }
 
-    public static Product updateProduct(Product product, Name name) {
-        return new Product(product.getId(), name);
+    public UnitPrice getUnitPrice() {
+        return unitPrice;
+    }
+
+    public static Product updateProduct(Product product, Name name, UnitPrice unitPrice) {
+        return new Product(product.getId(), name, unitPrice);
     }
 
     /**
@@ -76,13 +82,15 @@ public class Product implements Category {
         }
 
         Product otherProduct = (Product) other;
-        return this.getId() == otherProduct.getId();
+        return this.getId() == otherProduct.getId()
+                       && getName().equals(otherProduct.getName())
+                       && getUnitPrice().equals(otherProduct.getUnitPrice());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(id, name);
+        return Objects.hash(id, name, unitPrice);
     }
 
     @Override
@@ -91,7 +99,9 @@ public class Product implements Category {
         builder.append("ID: ")
                 .append(getId())
                 .append("; Name: ")
-                .append(getName());
+                .append(getName())
+                .append("; Unit Price: ")
+                .append(getUnitPrice());
 
         return builder.toString();
     }
