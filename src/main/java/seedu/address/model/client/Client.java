@@ -25,8 +25,13 @@ public class Client implements Category {
     public Client(Name name, PhoneNumber phoneNumber, Email email, Address address) {
         this(new ID(), name, phoneNumber, email, address);
     }
+<<<<<<< HEAD
     /** Constructs a {@code Client}. */
     public Client(ID id, Name name, PhoneNumber phoneNumber, Email email, Address address) {
+=======
+
+    private Client(ID id, Name name, PhoneNumber phoneNumber, Email email, Address address) {
+>>>>>>> origin
         requireAllNonNull(id, name, phoneNumber);
 
         this.id = id;

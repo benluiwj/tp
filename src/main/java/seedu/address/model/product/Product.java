@@ -24,11 +24,15 @@ public class Product implements Category {
     public Product(Name name, UnitPrice unitPrice, Quantity quantity) {
         this(new ID(), name, unitPrice, quantity);
     }
+<<<<<<< HEAD
 
     /**
      * Every field must be present and not null.
      */
     public Product(ID id, Name name, UnitPrice unitPrice, Quantity quantity) {
+=======
+    private Product(ID id, Name name, UnitPrice unitPrice, Quantity quantity) {
+>>>>>>> origin
         requireAllNonNull(id, name, unitPrice);
 
         this.id = id;
