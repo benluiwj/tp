@@ -7,6 +7,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.commons.ID;
 import seedu.address.model.commons.Name;
 import seedu.address.model.product.Product;
+import seedu.address.model.product.Quantity;
 import seedu.address.model.product.UnitPrice;
 
 /**
@@ -18,16 +19,20 @@ public class JsonAdaptedProduct {
     private final String name;
     private final String id;
     private final String unitPrice;
+    private final String quantity;
 
     /**
      * Constructs a {@code JsonAdaptedProduct} with the given product details.
      */
     @JsonCreator
-    public JsonAdaptedProduct(@JsonProperty("name") String name, @JsonProperty("id") String id,
-                              @JsonProperty("unit price") String unitPrice) {
+    public JsonAdaptedProduct(@JsonProperty("name") String name,
+                              @JsonProperty("id") String id,
+                              @JsonProperty("unit price") String unitPrice,
+                              @JsonProperty("quantity") String quantity) {
         this.name = name;
         this.id = id;
         this.unitPrice = unitPrice;
+        this.quantity = quantity;
     }
 
     /**
@@ -37,6 +42,7 @@ public class JsonAdaptedProduct {
         name = source.getName().fullName;
         id = source.getId().toString();
         unitPrice = source.getUnitPrice().toString();
+        quantity = source.getQuantity().quantity;
     }
 
     /**
@@ -63,7 +69,13 @@ public class JsonAdaptedProduct {
                     UnitPrice.class.getSimpleName()));
         }
         final UnitPrice modelUnitPrice = new UnitPrice(unitPrice);
-        return new Product(modelId, modelName, modelUnitPrice);
+
+        if (quantity == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    Quantity.class.getSimpleName()));
+        }
+        final Quantity modelQuantity = new Quantity(quantity);
+        return new Product(modelId, modelName, modelUnitPrice, modelQuantity);
     }
 }
 

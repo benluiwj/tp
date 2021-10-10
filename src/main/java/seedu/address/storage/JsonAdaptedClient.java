@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.client.Address;
 import seedu.address.model.client.Client;
+import seedu.address.model.client.Email;
 import seedu.address.model.client.PhoneNumber;
 import seedu.address.model.commons.ID;
 import seedu.address.model.commons.Name;
@@ -18,16 +20,23 @@ public class JsonAdaptedClient {
     private final String name;
     private final String id;
     private final String phoneNumber;
+    private final String address;
+    private final String email;
 
     /**
      * Constructs a {@code JsonAdaptedClient} with the given client details.
      */
     @JsonCreator
-    public JsonAdaptedClient(@JsonProperty("name") String name, @JsonProperty("id") String id,
-    @JsonProperty("phone number") String phoneNumber) {
+    public JsonAdaptedClient(@JsonProperty("name") String name,
+                             @JsonProperty("id") String id,
+                             @JsonProperty("phone number") String phoneNumber,
+                             @JsonProperty("address") String address,
+                             @JsonProperty("email") String email) {
         this.name = name;
         this.id = id;
         this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.email = email;
     }
 
     /**
@@ -36,7 +45,9 @@ public class JsonAdaptedClient {
     public JsonAdaptedClient(Client source) {
         name = source.getName().fullName;
         id = source.getId().toString();
-        phoneNumber = source.getPhoneNumber().toString();
+        phoneNumber = source.getPhoneNumber().phoneNumber;
+        address = source.getAddress().value;
+        email = source.getEmail().value;
     }
 
     /**
@@ -63,6 +74,18 @@ public class JsonAdaptedClient {
                     PhoneNumber.class.getSimpleName()));
         }
         final PhoneNumber modelPhoneNumber = new PhoneNumber(phoneNumber);
-        return new Client(modelId, modelName, modelPhoneNumber);
+
+        if (address == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    Address.class.getSimpleName()));
+        }
+        final Address modelAddress = new Address(address);
+
+        if (email == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    Email.class.getSimpleName()));
+        }
+        final Email modelEmail = new Email(email);
+        return new Client(modelId, modelName, modelPhoneNumber, modelEmail, modelAddress);
     }
 }
