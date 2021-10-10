@@ -25,10 +25,9 @@ public class Client implements Category {
     public Client(Name name, PhoneNumber phoneNumber, Email email, Address address) {
         this(new ID(), name, phoneNumber, email, address);
     }
-
     /** Constructs a {@code Client}. */
     public Client(ID id, Name name, PhoneNumber phoneNumber, Email email, Address address) {
-        requireAllNonNull(id, name, phoneNumber, email, address);
+        requireAllNonNull(id, name, phoneNumber);
 
         this.id = id;
         this.name = name;

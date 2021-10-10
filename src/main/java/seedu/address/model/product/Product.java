@@ -29,7 +29,7 @@ public class Product implements Category {
      * Every field must be present and not null.
      */
     public Product(ID id, Name name, UnitPrice unitPrice, Quantity quantity) {
-        requireAllNonNull(id, name, unitPrice, quantity);
+        requireAllNonNull(id, name, unitPrice);
 
         this.id = id;
         this.name = name;
